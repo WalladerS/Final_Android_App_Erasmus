@@ -14,5 +14,11 @@ class CommentRepository(private val commentDao: CommentDao) {
     suspend fun getAllCommentsForSchool(schoolId: Long): List<Comment> {
         return commentDao.getAllCommentsForSchool(schoolId)
     }
+
+    suspend fun deleteAllComments() {
+        withContext(Dispatchers.IO) {
+            commentDao.deleteAllComments()
+        }
+    }
 }
 
