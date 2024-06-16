@@ -96,6 +96,15 @@ fun Forum(school: School) {
             }) {
                 Text("Submit")
             }
+            Spacer(modifier = Modifier.width(8.dp))
+            Button(onClick = {
+                coroutineScope.launch {
+                    repository.deleteAllComments()
+                    listForum = emptyList()
+                }
+            }) {
+                Text("Clear Comments")
+            }
         }
     }
 }
