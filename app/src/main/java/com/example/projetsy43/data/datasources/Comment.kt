@@ -8,5 +8,6 @@ import androidx.room.PrimaryKey
 data class Comment(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val message: String,
-    val timestamp: Long
+    val timestamp: Long,
+    val schoolId: Long
 )

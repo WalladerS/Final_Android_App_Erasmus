@@ -11,9 +11,10 @@ interface CommentDao {
     @Insert
     suspend fun insert(comment: Comment)
 
-    @Query("SELECT * FROM comments ORDER BY timestamp DESC")
-    suspend fun getAllComments(): List<Comment>
+    @Query("SELECT * FROM comments WHERE schoolId = :schoolId")
+    suspend fun getAllCommentsForSchool(schoolId: Long): List<Comment>
 
     @Query("DELETE FROM comments")
     suspend fun deleteAllComments()
 }
+

@@ -14,7 +14,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.room.Room
 import kotlinx.coroutines.launch
@@ -23,10 +22,10 @@ import com.example.projetsy43.data.datasources.AppDatabase
 import com.example.projetsy43.data.datasources.Comment
 
 import com.example.projetsy43.data.datasources.ForumMessage
-
+import com.example.projetsy43.data.datasources.School
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Forum() {
+fun Forum(school: School) {
     val context = LocalContext.current
     val database = remember { initializeDatabase(context) }
     val repository = remember { CommentRepository(database.commentDao()) }
@@ -36,8 +35,8 @@ fun Forum() {
     var newComment by remember { mutableStateOf("") }
 
     // Load comments from the database
-    LaunchedEffect(Unit) {
-        val comments = repository.getAllComments().map { comment ->
+    LaunchedEffect(school) {
+        val comments = repository.getAllCommentsForSchool(school.id).map { comment ->
             ForumMessage(
                 fimg = R.drawable.user, // Example placeholder image
                 content = comment.message,
@@ -63,7 +62,7 @@ fun Forum() {
             Spacer(modifier = Modifier.height(8.dp))
 
             listForum.forEach { message ->
-                ForumMessage(message = message)
+                ForumMessageItem(message = message)
                 Spacer(modifier = Modifier.height(10.dp))
             }
 
@@ -80,9 +79,9 @@ fun Forum() {
             Button(onClick = {
                 if (newComment.isNotBlank()) {
                     coroutineScope.launch {
-                        val comment = Comment(message = newComment, timestamp = System.currentTimeMillis())
+                        val comment = Comment(message = newComment, timestamp = System.currentTimeMillis(), schoolId = school.id)
                         repository.insert(comment)
-                        val updatedComments = repository.getAllComments().map { comment ->
+                        val updatedComments = repository.getAllCommentsForSchool(school.id).map { comment ->
                             ForumMessage(
                                 fimg = R.drawable.user, // Example placeholder image
                                 content = comment.message,
@@ -100,16 +99,16 @@ fun Forum() {
         }
     }
 }
-
-private fun initializeDatabase(context: Context): AppDatabase {
+fun initializeDatabase(context: Context): AppDatabase {
     return Room.databaseBuilder(
         context.applicationContext,
         AppDatabase::class.java, "app-database"
-    ).build()
+    ).fallbackToDestructiveMigration() // Allow destructive migrations during development
+        .build()
 }
 
 @Composable
-fun ForumMessage(message: ForumMessage) {
+fun ForumMessageItem(message: ForumMessage) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
             painter = painterResource(id = message.fimg),
@@ -153,10 +152,4 @@ fun ForumMessage(message: ForumMessage) {
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ForumPreview() {
-    Forum()
 }

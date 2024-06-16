@@ -26,7 +26,6 @@ import com.example.projetsy43.data.datasources.AppDatabase
 import com.example.projetsy43.ui.detail.SchoolDetailScreen
 import com.example.projetsy43.ui.theme.Projetsy43Theme
 import kotlinx.coroutines.launch
-
 class MainActivity : ComponentActivity() {
 
     private lateinit var database: AppDatabase
@@ -52,8 +51,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Text(text = "test")
-
                     NavHost(navController = navController, startDestination = "dashboard") {
                         composable("dashboard") {
                             DashboardScreen(navController = navController)
@@ -76,15 +73,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
-        // Example usage: Insert a comment and fetch all comments
-        lifecycleScope.launch {
-
-            val comments = repository.getAllComments()
-            // Update your UI with the comments
-        }
     }
 }
-
 
 
