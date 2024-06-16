@@ -91,8 +91,8 @@ fun Forum() {
                             )
                         }
                         listForum = updatedComments
+                        newComment = ""  // Clear the input field after submission
                     }
-                    newComment = ""
                 }
             }) {
                 Text("Submit")
@@ -160,4 +160,3 @@ fun ForumMessage(message: ForumMessage) {
 fun ForumPreview() {
     Forum()
 }
-

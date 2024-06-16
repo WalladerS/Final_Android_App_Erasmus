@@ -79,10 +79,12 @@ class MainActivity : ComponentActivity() {
 
         // Example usage: Insert a comment and fetch all comments
         lifecycleScope.launch {
-            repository.insert(Comment(message = "Hello, world!", timestamp = System.currentTimeMillis()))
+
             val comments = repository.getAllComments()
             // Update your UI with the comments
         }
     }
 }
+
+
 
