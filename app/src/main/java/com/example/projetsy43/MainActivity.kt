@@ -69,6 +69,11 @@ class MainActivity : ComponentActivity() {
                             val school = schoolId?.let { SchoolData.getSchoolByUid(it) }
                             SchoolDetailScreen(navController = navController, school = school)
                         }
+                        composable("cityDetail/{country}/{city}") { backStackEntry ->
+                            val country = backStackEntry.arguments?.getString("country")
+                            val city = backStackEntry.arguments?.getString("city")
+                            CityDetailScreen(country = country!!, city = city!!, navController = navController)
+                        }
                     }
                 }
             }

@@ -9,11 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.rememberScrollState
+import androidx.navigation.NavController
 import com.example.projetsy43.data.datasources.School
 
 
 @Composable
-fun Dashboard(school: School, navigateUp: () -> Unit, modifier: Modifier = Modifier) {
+fun Dashboard(school: School, navController: NavController, modifier: Modifier = Modifier) {
     val scrollState = rememberScrollState()
 
     Column(
@@ -21,19 +22,13 @@ fun Dashboard(school: School, navigateUp: () -> Unit, modifier: Modifier = Modif
             .padding(10.dp)
             .verticalScroll(scrollState)
     ) {
-        Profile(school)
+        Profile(school, navController)
         Spacer(modifier = Modifier.height(16.dp))
         ImageCarousel(images = listOf(
             school.photo1,
             school.photo2,
             school.photo3,
-            school.photo4,
-            school.photo4,
-            school.photo4,
-            school.photo4,
             school.photo4
-
-
         ))
         Spacer(modifier = Modifier.height(16.dp))
         Forum(school)

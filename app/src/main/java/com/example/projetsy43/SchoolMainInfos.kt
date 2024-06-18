@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,16 +14,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.projetsy43.data.datasources.ReportData
 import com.example.projetsy43.data.datasources.School
 import com.example.projetsy43.data.datasources.SchoolData
 
 @Composable
-fun Profile(school: School) {
+fun Profile(school: School, navController: NavController) {
     Column(modifier = Modifier.background(Color(0xFFF0F0F0))) {
         Row(
             modifier = Modifier
@@ -102,6 +105,18 @@ fun Profile(school: School) {
                     color = Color(0xFF00796B)
                 )
                 RatingStars(rating = element.note_difficulty.toInt())
+
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(
+                    onClick = {
+                        navController.navigate("cityDetail/${school.country}/${school.location}")
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
+                ) {
+                    Icon(Icons.Filled.Info, contentDescription = "More Info")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("More about ${school.location}")
+                }
             }
         }
     }
@@ -152,5 +167,5 @@ fun RatingStars(rating: Int, maxRating: Int = 5) {
 @Preview(showBackground = true)
 @Composable
 fun ProfilePreview() {
-    Profile(SchoolData.getSchoolByUid(1))
+    Profile(SchoolData.getSchoolByUid(1), NavController(LocalContext.current))
 }

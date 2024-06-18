@@ -23,13 +23,14 @@ fun SchoolDetailScreen(navController: NavController, school: School?) {
         },
         content = { paddingValues ->
             if (school != null) {
-                // School details content goes here
-                // Replace `Dashboard` with your actual composable to show school details
                 Dashboard(
                     school = school,
-                    navigateUp = { navController.navigateUp() },
+                    navController = navController,
                     modifier = Modifier.padding(paddingValues)
                 )
+            } else {
+                // Handle the case where the school is null
+                Text("School not found", modifier = Modifier.padding(paddingValues))
             }
         }
     )
