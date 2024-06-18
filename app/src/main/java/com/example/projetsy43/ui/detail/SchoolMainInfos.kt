@@ -1,4 +1,4 @@
-package com.example.projetsy43
+package com.example.projetsy43.ui.detail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.projetsy43.SchoolPage
 import com.example.projetsy43.data.datasources.ReportData
 import com.example.projetsy43.data.datasources.School
 import com.example.projetsy43.data.datasources.SchoolData
@@ -167,5 +168,5 @@ fun RatingStars(rating: Int, maxRating: Int = 5) {
 @Preview(showBackground = true)
 @Composable
 fun ProfilePreview() {
-    Profile(SchoolData.getSchoolByUid(1), NavController(LocalContext.current))
+    SchoolPage(SchoolData.getSchoolByUid(1), NavController(LocalContext.current))
 }

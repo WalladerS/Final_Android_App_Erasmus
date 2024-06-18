@@ -14,7 +14,7 @@ import com.example.projetsy43.ui.components.SchoolsAppBar
 import com.example.projetsy43.R
 
 
-// Si jamais on souhaite afficher un menu pour le pays
+// Si jamais on souhaite afficher un menu pour le pays mais on fait pas appel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CountryDetailScreen(country: String, navController: NavController) {

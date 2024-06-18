@@ -1,5 +1,6 @@
 package com.example.projetsy43.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.projetsy43.data.datasources.School
 
@@ -21,8 +23,19 @@ fun SchoolItem(school: School, onSchoolClick: () -> Unit) {
             .fillMaxWidth()
             .clickable(onClick = onSchoolClick)
             .padding(8.dp)
-            .background(color = MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(4.dp))
+            .background(
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                shape = RoundedCornerShape(4.dp)
+            )
     ) {
+        Image(
+            painter = painterResource(id = school.image),
+            contentDescription = "${school.name} logo",
+            modifier = Modifier
+                .size(40.dp)
+                .padding(8.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = school.name,
             modifier = Modifier.padding(all = 8.dp),

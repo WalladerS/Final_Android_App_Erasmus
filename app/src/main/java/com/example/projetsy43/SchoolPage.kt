@@ -11,10 +11,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.rememberScrollState
 import androidx.navigation.NavController
 import com.example.projetsy43.data.datasources.School
+import com.example.projetsy43.ui.components.ImageCarousel
+import com.example.projetsy43.ui.detail.Profile
 
 
 @Composable
-fun Dashboard(school: School, navController: NavController, modifier: Modifier = Modifier) {
+fun SchoolPage(school: School, navController: NavController, modifier: Modifier = Modifier) {
     val scrollState = rememberScrollState()
 
     Column(

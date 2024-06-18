@@ -5,11 +5,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.example.projetsy43.Dashboard
+import com.example.projetsy43.SchoolPage
 import com.example.projetsy43.data.datasources.School
 import com.example.projetsy43.ui.components.SchoolsAppBar
 import com.example.projetsy43.R
-
+// Ce qui permet l'envoie vers SchoolPage
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SchoolDetailScreen(navController: NavController, school: School?) {
@@ -23,13 +23,13 @@ fun SchoolDetailScreen(navController: NavController, school: School?) {
         },
         content = { paddingValues ->
             if (school != null) {
-                Dashboard(
+                SchoolPage(
                     school = school,
                     navController = navController,
                     modifier = Modifier.padding(paddingValues)
                 )
             } else {
-                // Handle the case where the school is null
+
                 Text("School not found", modifier = Modifier.padding(paddingValues))
             }
         }

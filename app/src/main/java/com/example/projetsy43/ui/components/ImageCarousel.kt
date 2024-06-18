@@ -1,4 +1,4 @@
-package com.example.projetsy43
+package com.example.projetsy43.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

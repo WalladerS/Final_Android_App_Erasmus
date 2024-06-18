@@ -4,15 +4,22 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.*
+import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -21,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -66,36 +74,35 @@ fun CityDetailScreen(country: String, city: String, navController: NavController
                 }
             } else {
                 cityInfo?.let { city ->
-                    Column(
+                    LazyColumn(
                         modifier = Modifier
                             .padding(paddingValues)
                             .padding(16.dp)
+                            .fillMaxSize()
                     ) {
-                        Text(
-                            text = city.name,
-                            style = MaterialTheme.typography.headlineMedium,
-                            modifier = Modifier.padding(bottom = 8.dp)
-                        )
-                        Text(
-                            text = city.description,
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(bottom = 16.dp)
-                        )
-                        Text(
-                            text = "Photos",
-                            style = MaterialTheme.typography.headlineSmall,
-                            modifier = Modifier.padding(bottom = 8.dp)
-                        )
-                        LazyRow(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            items(city.photos) { photo ->
-                                Image(
-                                    painter = painterResource(id = photo),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .size(200.dp)
-                                        .padding(8.dp)
+                        item {
+                            Text(
+                                text = city.name,
+                                style = MaterialTheme.typography.headlineMedium.copy(fontSize = 30.sp),
+                                modifier = Modifier.padding(bottom = 8.dp)
+                            )
+                            Text(
+                                text = city.description,
+                                style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 24.sp),
+                                modifier = Modifier.padding(bottom = 16.dp)
+                            )
+                            CityPhotoViewer(photos = city.photos)
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                text = "Top Places to Visit",
+                                style = MaterialTheme.typography.headlineSmall.copy(fontSize = 24.sp),
+                                modifier = Modifier.padding(bottom = 8.dp)
+                            )
+                            city.attractions.forEach { attraction ->
+                                Text(
+                                    text = "• $attraction",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    modifier = Modifier.padding(bottom = 4.dp)
                                 )
                             }
                         }
@@ -113,4 +120,51 @@ fun CityDetailScreen(country: String, city: String, navController: NavController
             }
         }
     )
+}
+
+@Composable
+fun CityPhotoViewer(photos: List<Int>) {
+    var currentIndex by remember { mutableStateOf(0) }
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        if (photos.isNotEmpty()) {
+            Image(
+                painter = painterResource(id = photos[currentIndex]),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+                    .clip(MaterialTheme.shapes.medium)
+            )
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            IconButton(
+                onClick = { if (currentIndex > 0) currentIndex-- },
+                enabled = currentIndex > 0
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Previous photo"
+                )
+            }
+            Spacer(modifier = Modifier.width(16.dp))
+            IconButton(
+                onClick = { if (currentIndex < photos.size - 1) currentIndex++ },
+                enabled = currentIndex < photos.size - 1
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowForward,
+                    contentDescription = "Next photo"
+                )
+            }
+        }
+    }
 }
