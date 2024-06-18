@@ -40,7 +40,25 @@ object ReportData {
             max_student_registered = 10,
             note_school = 4,
             note_life = 11,
-            note_difficulty = 10)
+            note_difficulty = 10),
+        Report(id = SchoolData.getSchoolByUid(7),
+            number_student_registered = 3,
+            max_student_registered = 10,
+            note_school = 4,
+            note_life = 10,
+            note_difficulty = 2),
+        Report(id = SchoolData.getSchoolByUid(8),
+            number_student_registered = 3,
+            max_student_registered = 10,
+            note_school = 4,
+            note_life = 10,
+            note_difficulty = 2),
+        Report(id = SchoolData.getSchoolByUid(9),
+            number_student_registered = 3,
+            max_student_registered = 10,
+            note_school = 4,
+            note_life = 10,
+            note_difficulty = 2),
     )
 
     fun getDefaultReportData() = reports.first()

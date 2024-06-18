@@ -27,7 +27,13 @@ fun Dashboard(school: School, navigateUp: () -> Unit, modifier: Modifier = Modif
             school.photo1,
             school.photo2,
             school.photo3,
+            school.photo4,
+            school.photo4,
+            school.photo4,
+            school.photo4,
             school.photo4
+
+
         ))
         Spacer(modifier = Modifier.height(16.dp))
         Forum(school)
