@@ -21,6 +21,12 @@ class CommentRepository(private val commentDao: CommentDao) {
         }
     }
 
+    suspend fun unlikeComment(commentId: Int) {
+        withContext(Dispatchers.IO) {
+            commentDao.unlikeComment(commentId)
+        }
+    }
+
     suspend fun deleteAllComments() {
         withContext(Dispatchers.IO) {
             commentDao.deleteAllComments()

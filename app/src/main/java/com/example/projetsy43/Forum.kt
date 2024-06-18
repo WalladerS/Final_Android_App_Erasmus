@@ -33,6 +33,7 @@ fun Forum(school: School) {
 
     var listForum by remember { mutableStateOf(listOf<ForumMessage>()) }
     var newComment by remember { mutableStateOf("") }
+    val likedComments = remember { mutableStateOf(mutableSetOf<Int>()) }
 
     // Load comments from the database
     LaunchedEffect(school) {
@@ -65,7 +66,13 @@ fun Forum(school: School) {
             listForum.forEach { message ->
                 ForumMessageItem(message = message, onLike = {
                     coroutineScope.launch {
-                        repository.likeComment(message.id)
+                        if (likedComments.value.contains(message.id)) {
+                            repository.unlikeComment(message.id)
+                            likedComments.value.remove(message.id)
+                        } else {
+                            repository.likeComment(message.id)
+                            likedComments.value.add(message.id)
+                        }
                         val updatedComments = repository.getAllCommentsForSchool(school.id).map { comment ->
                             ForumMessage(
                                 id = comment.id,
@@ -77,7 +84,7 @@ fun Forum(school: School) {
                         }
                         listForum = updatedComments
                     }
-                })
+                }, isLiked = likedComments.value.contains(message.id))
                 Spacer(modifier = Modifier.height(10.dp))
             }
 
@@ -134,7 +141,7 @@ fun initializeDatabase(context: Context): AppDatabase {
 }
 
 @Composable
-fun ForumMessageItem(message: ForumMessage, onLike: () -> Unit) {
+fun ForumMessageItem(message: ForumMessage, onLike: () -> Unit, isLiked: Boolean) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
             painter = painterResource(id = message.fimg),
@@ -154,7 +161,7 @@ fun ForumMessageItem(message: ForumMessage, onLike: () -> Unit) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = onLike) {
                     Image(
-                        painter = painterResource(id = R.drawable.like),
+                        painter = painterResource(id = if (isLiked) R.drawable.liked else R.drawable.like),
                         contentDescription = "Like Icon",
                         modifier = Modifier.size(20.dp)
                     )
@@ -162,18 +169,6 @@ fun ForumMessageItem(message: ForumMessage, onLike: () -> Unit) {
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = message.likes.toString(),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Image(
-                    painter = painterResource(id = R.drawable.comment),
-                    contentDescription = "Comment Icon",
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = message.comments.toString(),
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray
                 )

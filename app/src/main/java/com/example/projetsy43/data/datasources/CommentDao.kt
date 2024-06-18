@@ -17,6 +17,10 @@ interface CommentDao {
     @Query("UPDATE comments SET likes = likes + 1 WHERE id = :commentId")
     suspend fun likeComment(commentId: Int)
 
+    @Query("UPDATE comments SET likes = likes - 1 WHERE id = :commentId")
+    suspend fun unlikeComment(commentId: Int)
+
     @Query("DELETE FROM comments")
     suspend fun deleteAllComments()
 }
+
