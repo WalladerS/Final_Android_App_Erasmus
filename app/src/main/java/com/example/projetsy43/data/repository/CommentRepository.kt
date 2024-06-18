@@ -15,10 +15,15 @@ class CommentRepository(private val commentDao: CommentDao) {
         return commentDao.getAllCommentsForSchool(schoolId)
     }
 
+    suspend fun likeComment(commentId: Int) {
+        withContext(Dispatchers.IO) {
+            commentDao.likeComment(commentId)
+        }
+    }
+
     suspend fun deleteAllComments() {
         withContext(Dispatchers.IO) {
             commentDao.deleteAllComments()
         }
     }
 }
-

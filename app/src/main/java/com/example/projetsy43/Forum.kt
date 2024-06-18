@@ -20,9 +20,9 @@ import kotlinx.coroutines.launch
 import com.example.projetsy43.data.repository.CommentRepository
 import com.example.projetsy43.data.datasources.AppDatabase
 import com.example.projetsy43.data.datasources.Comment
-
 import com.example.projetsy43.data.datasources.ForumMessage
 import com.example.projetsy43.data.datasources.School
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Forum(school: School) {
@@ -38,9 +38,10 @@ fun Forum(school: School) {
     LaunchedEffect(school) {
         val comments = repository.getAllCommentsForSchool(school.id).map { comment ->
             ForumMessage(
+                id = comment.id,
                 fimg = R.drawable.user, // Example placeholder image
                 content = comment.message,
-                likes = 0,
+                likes = comment.likes,
                 comments = 0
             )
         }
@@ -62,7 +63,21 @@ fun Forum(school: School) {
             Spacer(modifier = Modifier.height(8.dp))
 
             listForum.forEach { message ->
-                ForumMessageItem(message = message)
+                ForumMessageItem(message = message, onLike = {
+                    coroutineScope.launch {
+                        repository.likeComment(message.id)
+                        val updatedComments = repository.getAllCommentsForSchool(school.id).map { comment ->
+                            ForumMessage(
+                                id = comment.id,
+                                fimg = R.drawable.user, // Example placeholder image
+                                content = comment.message,
+                                likes = comment.likes,
+                                comments = 0
+                            )
+                        }
+                        listForum = updatedComments
+                    }
+                })
                 Spacer(modifier = Modifier.height(10.dp))
             }
 
@@ -83,9 +98,10 @@ fun Forum(school: School) {
                         repository.insert(comment)
                         val updatedComments = repository.getAllCommentsForSchool(school.id).map { comment ->
                             ForumMessage(
+                                id = comment.id,
                                 fimg = R.drawable.user, // Example placeholder image
                                 content = comment.message,
-                                likes = 0,
+                                likes = comment.likes,
                                 comments = 0
                             )
                         }
@@ -108,16 +124,17 @@ fun Forum(school: School) {
         }
     }
 }
+
 fun initializeDatabase(context: Context): AppDatabase {
     return Room.databaseBuilder(
         context.applicationContext,
         AppDatabase::class.java, "app-database"
-    ).fallbackToDestructiveMigration() // Allow destructive migrations during development
+    ).fallbackToDestructiveMigration() // This will recreate the database if the schema version is increased
         .build()
 }
 
 @Composable
-fun ForumMessageItem(message: ForumMessage) {
+fun ForumMessageItem(message: ForumMessage, onLike: () -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
             painter = painterResource(id = message.fimg),
@@ -135,11 +152,13 @@ fun ForumMessageItem(message: ForumMessage) {
             )
             Spacer(modifier = Modifier.height(4.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(
-                    painter = painterResource(id = R.drawable.like),
-                    contentDescription = "Like Icon",
-                    modifier = Modifier.size(20.dp)
-                )
+                IconButton(onClick = onLike) {
+                    Image(
+                        painter = painterResource(id = R.drawable.like),
+                        contentDescription = "Like Icon",
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = message.likes.toString(),
@@ -161,5 +180,4 @@ fun ForumMessageItem(message: ForumMessage) {
             }
         }
     }
-
 }

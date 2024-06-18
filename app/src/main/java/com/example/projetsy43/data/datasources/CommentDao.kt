@@ -14,7 +14,9 @@ interface CommentDao {
     @Query("SELECT * FROM comments WHERE schoolId = :schoolId")
     suspend fun getAllCommentsForSchool(schoolId: Long): List<Comment>
 
+    @Query("UPDATE comments SET likes = likes + 1 WHERE id = :commentId")
+    suspend fun likeComment(commentId: Int)
+
     @Query("DELETE FROM comments")
     suspend fun deleteAllComments()
 }
-

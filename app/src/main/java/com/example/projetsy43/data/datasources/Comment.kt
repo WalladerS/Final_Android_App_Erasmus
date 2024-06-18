@@ -9,5 +9,6 @@ data class Comment(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val message: String,
     val timestamp: Long,
-    val schoolId: Long
+    val schoolId: Long,
+    val likes: Int = 0 // New field for likes
 )
