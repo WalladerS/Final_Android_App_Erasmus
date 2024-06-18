@@ -5,14 +5,22 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.room.Room
@@ -23,16 +31,17 @@ import com.example.projetsy43.data.datasources.Comment
 import com.example.projetsy43.data.datasources.ForumMessage
 import com.example.projetsy43.data.datasources.School
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun Forum(school: School) {
     val context = LocalContext.current
     val database = remember { initializeDatabase(context) }
     val repository = remember { CommentRepository(database.commentDao()) }
     val coroutineScope = rememberCoroutineScope()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     var listForum by remember { mutableStateOf(listOf<ForumMessage>()) }
-    var newComment by remember { mutableStateOf("") }
+    var newComment by remember { mutableStateOf(TextFieldValue("")) }
     val likedComments = remember { mutableStateOf(mutableSetOf<Int>()) }
 
     // Load comments from the database
@@ -95,13 +104,47 @@ fun Forum(school: School) {
                 value = newComment,
                 onValueChange = { newComment = it },
                 label = { Text("Enter a comment") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Done,
+                    keyboardType = KeyboardType.Text
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        if (newComment.text.isNotBlank()) {
+                            coroutineScope.launch {
+                                val comment = Comment(
+                                    message = newComment.text,
+                                    timestamp = System.currentTimeMillis(),
+                                    schoolId = school.id
+                                )
+                                repository.insert(comment)
+                                val updatedComments = repository.getAllCommentsForSchool(school.id).map { comment ->
+                                    ForumMessage(
+                                        id = comment.id,
+                                        fimg = R.drawable.user, // Example placeholder image
+                                        content = comment.message,
+                                        likes = comment.likes,
+                                        comments = 0
+                                    )
+                                }
+                                listForum = updatedComments
+                                newComment = TextFieldValue("")  // Clear the input field after submission
+                            }
+                            keyboardController?.hide() // Hide the keyboard
+                        }
+                    }
+                )
             )
             Spacer(modifier = Modifier.height(8.dp))
             Button(onClick = {
-                if (newComment.isNotBlank()) {
+                if (newComment.text.isNotBlank()) {
                     coroutineScope.launch {
-                        val comment = Comment(message = newComment, timestamp = System.currentTimeMillis(), schoolId = school.id)
+                        val comment = Comment(
+                            message = newComment.text,
+                            timestamp = System.currentTimeMillis(),
+                            schoolId = school.id
+                        )
                         repository.insert(comment)
                         val updatedComments = repository.getAllCommentsForSchool(school.id).map { comment ->
                             ForumMessage(
@@ -113,7 +156,8 @@ fun Forum(school: School) {
                             )
                         }
                         listForum = updatedComments
-                        newComment = ""  // Clear the input field after submission
+                        newComment = TextFieldValue("")  // Clear the input field after submission
+                        keyboardController?.hide() // Hide the keyboard
                     }
                 }
             }) {
