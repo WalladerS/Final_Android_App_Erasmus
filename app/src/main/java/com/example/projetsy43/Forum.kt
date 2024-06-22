@@ -49,7 +49,7 @@ fun Forum(school: School) {
         val comments = repository.getAllCommentsForSchool(school.id).map { comment ->
             ForumMessage(
                 id = comment.id,
-                fimg = R.drawable.user, // Example placeholder image
+                fimg = R.drawable.user,
                 content = comment.message,
                 likes = comment.likes,
                 comments = 0
@@ -85,7 +85,7 @@ fun Forum(school: School) {
                         val updatedComments = repository.getAllCommentsForSchool(school.id).map { comment ->
                             ForumMessage(
                                 id = comment.id,
-                                fimg = R.drawable.user, // Example placeholder image
+                                fimg = R.drawable.user,
                                 content = comment.message,
                                 likes = comment.likes,
                                 comments = 0
@@ -99,7 +99,7 @@ fun Forum(school: School) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Input field for new comment
+
             OutlinedTextField(
                 value = newComment,
                 onValueChange = { newComment = it },
@@ -122,16 +122,16 @@ fun Forum(school: School) {
                                 val updatedComments = repository.getAllCommentsForSchool(school.id).map { comment ->
                                     ForumMessage(
                                         id = comment.id,
-                                        fimg = R.drawable.user, // Example placeholder image
+                                        fimg = R.drawable.user,
                                         content = comment.message,
                                         likes = comment.likes,
                                         comments = 0
                                     )
                                 }
                                 listForum = updatedComments
-                                newComment = TextFieldValue("")  // Clear the input field after submission
+                                newComment = TextFieldValue("")
                             }
-                            keyboardController?.hide() // Hide the keyboard
+                            keyboardController?.hide()
                         }
                     }
                 )
@@ -149,15 +149,15 @@ fun Forum(school: School) {
                         val updatedComments = repository.getAllCommentsForSchool(school.id).map { comment ->
                             ForumMessage(
                                 id = comment.id,
-                                fimg = R.drawable.user, // Example placeholder image
+                                fimg = R.drawable.user,
                                 content = comment.message,
                                 likes = comment.likes,
                                 comments = 0
                             )
                         }
                         listForum = updatedComments
-                        newComment = TextFieldValue("")  // Clear the input field after submission
-                        keyboardController?.hide() // Hide the keyboard
+                        newComment = TextFieldValue("")
+                        keyboardController?.hide()
                     }
                 }
             }) {
@@ -180,7 +180,7 @@ fun initializeDatabase(context: Context): AppDatabase {
     return Room.databaseBuilder(
         context.applicationContext,
         AppDatabase::class.java, "app-database"
-    ).fallbackToDestructiveMigration() // This will recreate the database if the schema version is increased
+    ).fallbackToDestructiveMigration()
         .build()
 }
 

@@ -9,7 +9,7 @@ import com.example.projetsy43.SchoolPage
 import com.example.projetsy43.data.datasources.School
 import com.example.projetsy43.ui.components.SchoolsAppBar
 import com.example.projetsy43.R
-// Ce qui permet l'envoie vers SchoolPage
+// Ce qui permet l'envoie vers SchoolPage depuis le menu de base bleu
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SchoolDetailScreen(navController: NavController, school: School?) {

@@ -14,7 +14,7 @@ import com.example.projetsy43.ui.components.ExpandableHeader
 import com.example.projetsy43.ui.components.SchoolItem
 import com.example.projetsy43.ui.components.SchoolsAppBar
 import com.example.projetsy43.R
-
+// Page sur laquelle on arrive quand on lance l'app
 val expandedCountries = mutableStateMapOf<String, Boolean>()
 val expandedCities = mutableStateMapOf<String, Boolean>()
 

@@ -20,7 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
+// C'est la fonction qui permet aux imgages de défilé dans la shcoolPage
 @Composable
 fun ImageCarousel(images: List<Int>) {
     val listState = rememberLazyListState()

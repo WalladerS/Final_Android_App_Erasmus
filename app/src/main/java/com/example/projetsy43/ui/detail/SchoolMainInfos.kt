@@ -27,7 +27,7 @@ import com.example.projetsy43.data.datasources.SchoolData
 
 @Composable
 fun Profile(school: School, navController: NavController) {
-    Column(modifier = Modifier.background(Color(0xFFF0F0F0))) {
+    Column(modifier = Modifier) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

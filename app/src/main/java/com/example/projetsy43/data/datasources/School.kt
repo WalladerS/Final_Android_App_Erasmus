@@ -1,5 +1,5 @@
 package com.example.projetsy43.data.datasources
-
+// On a préféré faire une data class pour School mais on aurait pu faire database aussi.
 data class School(
     val id: Long,
     val image: Int,

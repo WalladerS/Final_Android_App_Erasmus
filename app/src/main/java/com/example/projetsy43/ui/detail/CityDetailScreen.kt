@@ -40,7 +40,7 @@ import com.example.projetsy43.data.datasources.School
 import com.example.projetsy43.data.datasources.City
 import com.example.projetsy43.data.datasources.CityData
 
-// Ci jamais on souhaite afficher un écran pour la ville
+// c'est l'écran qui s'affiche quand on clique sur + d'info sur la ville
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CityDetailScreen(country: String, city: String, navController: NavController) {

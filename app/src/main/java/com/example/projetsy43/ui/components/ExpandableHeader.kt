@@ -14,7 +14,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-
+// Ici on gère l'affichage avec les menu qui souvrent quand on clique sur ville pays...
 
 @Composable
 fun ExpandableHeader(

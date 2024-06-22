@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
-
+// Ici c'est une partie de l'affichage dans school le haut
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,7 +25,7 @@ fun SchoolsAppBar(canNavigateBack: Boolean, navigateUp: () -> Unit, logoResId: I
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (canNavigateBack) {
-                    Spacer(modifier = Modifier.width(48.dp)) // To balance the back arrow icon
+                    Spacer(modifier = Modifier.width(48.dp))
                 }
                 Image(
                     painter = painterResource(id = logoResId),
@@ -33,7 +33,7 @@ fun SchoolsAppBar(canNavigateBack: Boolean, navigateUp: () -> Unit, logoResId: I
                     modifier = Modifier.size(170.dp)
                 )
                 if (!canNavigateBack) {
-                    Spacer(modifier = Modifier.width(48.dp)) // To balance the empty space
+                    Spacer(modifier = Modifier.width(48.dp))
                 }
             }
         },
